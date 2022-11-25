@@ -5,18 +5,46 @@ class NewTransaction extends StatefulWidget {
 
   final Function addTx;
 
-  NewTransaction(this.addTx);
+  NewTransaction(this.addTx) {
+   print("Constructor  NewTransaction Widget");
+  }
 
   @override
-  State<NewTransaction> createState() => _NewTransactionState();
+  State<NewTransaction> createState() {
+    print("createState  NewTransaction Widget");
+    return _NewTransactionState();
+  }
 }
 
 class _NewTransactionState extends State<NewTransaction> {
+
   final _titleController = TextEditingController();
 
   final _amountController = TextEditingController();
 
   DateTime _selectedDate;
+
+  _NewTransactionState() {
+    print("Constructor NewTransaction State");
+  }
+
+  @override
+  void initState() {
+    print("initState()");
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant NewTransaction oldWidget) {
+    print("didUpdateWidget()");
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    print("dispose()");
+    super.dispose();
+  }
 
   void _submitData() {
 
@@ -58,55 +86,63 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget> [
-            TextField(
-              decoration: InputDecoration(labelText: "Title"),
-              controller: _titleController,
-              keyboardType: TextInputType.text,
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: "Amount"),
-              controller: _amountController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => _submitData,
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: <Widget> [
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                        ? "No Date Chosen"
-                        :  "Picked Date: ${DateFormat.yMd().format(_selectedDate)}"
-                    ),
-                  ),
-                  TextButton(
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor)
-                    ),
-                    child: Text(
-                      "Choose Date",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
+    final mediaQuery = MediaQuery.of(context);
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+              top:10,
+              left: 10,
+              right: 10,
+              bottom: 100 + mediaQuery.viewInsets.bottom,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget> [
+              TextField(
+                decoration: InputDecoration(labelText: "Title"),
+                controller: _titleController,
+                keyboardType: TextInputType.text,
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: "Amount"),
+                controller: _amountController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _submitData,
+              ),
+              Container(
+                height: 70,
+                child: Row(
+                  children: <Widget> [
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null
+                          ? "No Date Chosen"
+                          :  "Picked Date: ${DateFormat.yMd().format(_selectedDate)}"
                       ),
                     ),
-                    onPressed: _presentDatePicker,
-                  )
-                ],
+                    TextButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor)
+                      ),
+                      child: Text(
+                        "Choose Date",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      onPressed: _presentDatePicker,
+                    )
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              child: Text("Add Transaction"),
-              onPressed: _submitData,
-            )
-          ],
+              ElevatedButton(
+                child: Text("Add Transaction"),
+                onPressed: _submitData,
+              )
+            ],
+          ),
         ),
       ),
     );
